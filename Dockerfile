@@ -4,4 +4,5 @@ COPY package.json ./
 COPY yarn.lock ./   
 COPY ./ ./
 RUN npm i
-CMD ["yarn", "run", "start:dev"]
+RUN npm run build
+CMD ["yarn", "run", "start:prod"]
