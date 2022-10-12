@@ -6,4 +6,5 @@ COPY yarn.lock ./
 RUN npm install --production 
 RUN npm run build
 COPY ./ ./
-CMD ["yarn", "run", "start:prod"]
+RUN yarn run start:prod
+# CMD ["yarn", "run", "start:prod"]
