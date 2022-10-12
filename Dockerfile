@@ -3,7 +3,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./ 
-RUN npm install tsc
+RUN npm install typescript -g
 RUN npm install --production 
 RUN npm run build
 COPY ./ ./
