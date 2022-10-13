@@ -3,8 +3,8 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./ 
-RUN yarn global add typescript
-RUN yarn install --production 
+RUN npm global add typescript
+RUN npm install --production 
 COPY ./ ./
-RUN yarn run start:prod
-# CMD ["yarn", "run", "start:prod"]
+RUN npm run start:prod
+# CMD ["npm", "run", "start:prod"]
