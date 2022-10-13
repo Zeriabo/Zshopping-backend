@@ -3,7 +3,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./ 
-RUN npm global add typescript
+RUN npm install typescript
 RUN npm install --production 
 COPY ./ ./
 RUN npm run start:prod
