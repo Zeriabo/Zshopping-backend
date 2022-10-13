@@ -3,6 +3,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./ 
+RUN npm install -g npm@8.19.2
 RUN npm install typescript
 RUN npm install --production 
 COPY ./ ./

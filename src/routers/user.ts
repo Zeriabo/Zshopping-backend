@@ -77,7 +77,7 @@ router.get('/login/failed', (req, res) => {
 router.get('/logout', (req, res) => {
   req.logOut()
 
-  res.redirect('http://localhost:3050')
+  res.redirect('https://zshopping.herokuapp.com/')
 })
 
 /**
@@ -135,7 +135,7 @@ const signToken = (res: any, user: any) => {
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3050/',
+    successRedirect: 'https://zshopping.herokuapp.com/',
     failureRedirect: '/login/failed',
   }),
   (req, res) => {
