@@ -6,5 +6,5 @@ COPY yarn.lock ./
 RUN npm install typescript
 RUN npm install --production 
 COPY ./ ./
-RUN npm run start:dev
+CMD ["npm", "run", "start:prod"]
 # CMD ["npm", "run", "start:prod"]
