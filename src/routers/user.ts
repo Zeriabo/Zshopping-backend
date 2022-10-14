@@ -123,7 +123,7 @@ const signToken = (res: any, user: any) => {
 // Every path we define here will get /api/v1/users/ prefix
 /**
  * @openapi
- * /auth/google/callback':
+ * /auth/google/callback:
  *  get:
  *     tags:
  *     - User
@@ -196,7 +196,7 @@ router.get('/get/:email', findByEmail)
  * @openapi
  * /api/v1/users/create:
  *  post:
- *     summary: Add a new cart
+ *     summary: Add a new user
  *     produces: application/json,
  *     consumes: application/json,
  *     parameters:
