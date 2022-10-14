@@ -55,6 +55,7 @@ export const myPassport = passport.use(
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL:
         'https://zshopping-backend.herokuapp.com/api/v1/users/auth/google/callback',
+      passReqToCallback: true,
     },
     function (
       request: any,
