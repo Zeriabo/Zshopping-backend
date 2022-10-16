@@ -8,6 +8,7 @@ require('dotenv').config()
 
 const GOOGLE_CLIENT_ID = process.env.CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET
+
 function getDate(): any {
   const dateTime = new Date()
 
@@ -54,7 +55,7 @@ export const myPassport = passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL:
-        'https://zshopping-backend.herokuapp.com/api/v1/users/auth/google/callback',
+        'https://zshopping-backend.herokuapp.com/auth/google/callback',
       passReqToCallback: true,
     },
     function (
