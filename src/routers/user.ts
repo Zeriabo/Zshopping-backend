@@ -133,7 +133,7 @@ const signToken = (res: any, user: any) => {
  *         description: return the User
  */
 router.get(
-  '/auth/google/callback',
+  '/auth/google-callback',
   passport.authenticate('google', {
     successRedirect: 'https://zshopping.herokuapp.com/',
     failureRedirect: '/login/failed',
