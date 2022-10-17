@@ -123,7 +123,7 @@ const signToken = (res: any, user: any) => {
 // Every path we define here will get /api/v1/users/ prefix
 /**
  * @openapi
- * /auth/google-callback:
+ * /api/v1/auth/google-callback:
  *  get:
  *     tags:
  *     - User
