@@ -43,7 +43,8 @@ function getDate() {
 exports.myPassport = passport_1.default.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://https://zshopping-backend.herokuapp.com/api/v1/users/auth/google/callback',
+    callbackURL: 'https://zshopping-backend.herokuapp.com/api/v1/users/auth/google-callback',
+    passReqToCallback: true,
 }, function (request, accessToken, refreshToken, profile, cb) {
     const user = {
         id: profile.id,

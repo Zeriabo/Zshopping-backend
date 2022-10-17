@@ -22,35 +22,37 @@ const initialState = {
     total: 0,
 };
 exports.fetchCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield axios_1.default.get(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + id);
+    return yield axios_1.default.get("https://zshopping-backend.herokuapp.com/api/v1/cartdetails/" + id);
 }));
 exports.addProductToCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (data) => __awaiter(void 0, void 0, void 0, function* () {
     const cartId = data.cartId;
     const productId = data.id;
-    yield fetch(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + cartId, {
+    yield fetch("https://zshopping-backend.herokuapp.com/api/v1/cartdetails/" + cartId, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({ productId: productId }),
     });
 }));
 exports.checkOut = toolkit_1.createAsyncThunk("checkOutCart", (id) => __awaiter(void 0, void 0, void 0, function* () {
     const cartId = id;
-    yield fetch(process.env.REACT_APP_SERVER_URL + "/carts/" + cartId, {
+    yield fetch("https://zshopping-backend.herokuapp.com/api/v1/carts/" + cartId, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
         },
     });
 }));
 exports.getCartDetails = (id) => {
     axios_1.default
-        .get(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + id)
+        .get("https://zshopping-backend.herokuapp.com/api/v1/cartdetails/" + id)
         .then((res) => {
         //cartid
         return res.data;
@@ -59,12 +61,14 @@ exports.getCartDetails = (id) => {
 exports.removeProductFromCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (data) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(data);
     const id = data.id; //productId
-    fetch(process.env.REACT_APP_SERVER_URL + "/cartdetails/remove/" + data.cartId, {
+    fetch("https://zshopping-backend.herokuapp.com/api/v1/cartdetails/remove/" +
+        data.cartId, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({ productId: data.id }),
     });

@@ -20,12 +20,13 @@ const initialState = {
 };
 var untouch = [];
 exports.fetchProducts = toolkit_1.createAsyncThunk("getProducts", () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch(process.env.REACT_APP_SERVER_URL + "/products/", {
+    const response = yield fetch("https://zshopping-backend.herokuapp.com/api/v1/products/", {
         method: "GET",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
         },
     });
     if (response.status === 201) {

@@ -60,7 +60,7 @@ router.get('/login/failed', (req, res) => {
  */
 router.get('/logout', (req, res) => {
     req.logOut();
-    res.redirect('http://localhost:3050');
+    res.redirect('https://zshopping.herokuapp.com/');
 });
 /**
  * @openapi
@@ -102,7 +102,7 @@ const signToken = (res, user) => {
 // Every path we define here will get /api/v1/users/ prefix
 /**
  * @openapi
- * /auth/google/callback':
+ * /api/v1/auth/google-callback:
  *  get:
  *     tags:
  *     - User
@@ -111,8 +111,8 @@ const signToken = (res, user) => {
  *       200:
  *         description: return the User
  */
-router.get('/auth/google/callback', passport_1.default.authenticate('google', {
-    successRedirect: 'http://localhost:3050/',
+router.get('/auth/google-callback', passport_1.default.authenticate('google', {
+    successRedirect: 'https://zshopping.herokuapp.com/',
     failureRedirect: '/login/failed',
 }), (req, res) => {
     signToken(res, req.user);
@@ -171,7 +171,7 @@ router.get('/get/:email', user_1.findByEmail);
  * @openapi
  * /api/v1/users/create:
  *  post:
- *     summary: Add a new cart
+ *     summary: Add a new user
  *     produces: application/json,
  *     consumes: application/json,
  *     parameters:

@@ -17,12 +17,13 @@ const initialState = {
     status: "idle",
 };
 exports.fetchCategories = toolkit_1.createAsyncThunk("getCategories", () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch(process.env.REACT_APP_SERVER_URL + "/category", {
+    const response = yield fetch("https://zshopping-backend.herokuapp.com/api/v1/category", {
         method: "GET",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
         },
     });
     if (response.status === 201) {
