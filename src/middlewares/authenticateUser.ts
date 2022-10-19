@@ -4,9 +4,9 @@ import ApiError from '../helpers/apiError'
 import logger from '../util/logger'
 import passport from 'passport'
 import { myPassport } from '../config/passport'
+import jwt from 'jsonwebtoken'
 
 export const logRequest = (req: Request, res: Response, next: NextFunction) => {
-  console.log('i am middle ware ')
   next()
 }
 
@@ -17,12 +17,31 @@ export const authenticateUser = (
 ) => {
   const { username, password } = req.body
   const user = { username, password }
+  myPassport
+    .authenticate('google', {
+      scope: ['email', 'profile'],
+    })
+    .then((res: any) => {
+      console.log('kissak')
+      next(res)
+    })
+    .catch((err: Error) => {
+      console.log('ayrree')
+      next(err)
+    })
+}
 
-  myPassport.authenticate('google', {
-    failureRedirect: '/login',
-    failureMessage: true,
-  })
+export const decodeUserToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { token } = req.body
 
-  console.log(user)
-  next(user)
+  const decoded = jwt.verify(token, 'RRTOOYHOS')
+  if (1 > 0) {
+  } else {
+    throw new Error('not match')
+  }
+  return decoded
 }

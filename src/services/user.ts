@@ -1,3 +1,5 @@
+import { OAuth2Client } from 'google-auth-library'
+import { nextTick } from 'process'
 import { client } from '../server'
 
 const getUsers = async () => {
@@ -45,6 +47,7 @@ const deleteUser = async (id: number) => {
   )
   return response.rowCount > 0
 }
+
 const updateUser = async (id: number, update: any) => {
   const toUpdate = await client.query(
     'SELECT * FROM public."users" where id= $1',

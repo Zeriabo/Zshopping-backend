@@ -4,10 +4,23 @@ import { Request, Response, NextFunction } from 'express'
 import { User, UserModel } from '../models/User'
 import { client } from '../server'
 import { parseConnectionUrl } from 'nodemailer/lib/shared'
+import JwtStrategy, { ExtractJwt } from 'passport-jwt'
 require('dotenv').config()
 
 const GOOGLE_CLIENT_ID = process.env.CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET
+
+export const jwtStrategy = new JwtStrategy.Strategy(
+  {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: `${process.env.JWT_SECRET}`,
+  },
+  (jwtPayload: any, done: (arg0: null, arg1: any) => void) => {
+    const user = jwtPayload
+    console.log('User from strategy', user)
+    done(null, user)
+  }
+)
 
 function getDate(): any {
   const dateTime = new Date()
@@ -49,13 +62,13 @@ function getDate(): any {
     seconds
   )
 }
+
 export const myPassport = passport.use(
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        'https://zshopping-backend.herokuapp.com/api/v1/users/auth/google-callback',
+      callbackURL: 'http://localhost:5001/api/v1/users/auth/google-callback',
       passReqToCallback: true,
     },
     function (
@@ -65,6 +78,7 @@ export const myPassport = passport.use(
       profile: any,
       cb: (arg0: any, arg1: any) => any
     ) {
+      console.log(profile)
       const user = {
         id: profile.id,
         name: profile.displayName,
@@ -118,9 +132,8 @@ export const myPassport = passport.use(
                 console.log(null, err)
               }
               if (res) {
-                //  console.log(res)
                 if (res.rowCount > 0) {
-                  //user existsgi
+                  return
                 }
                 if (res.rowCount == 0) {
                   //user does not exists

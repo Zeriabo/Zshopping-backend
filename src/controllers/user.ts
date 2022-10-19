@@ -5,6 +5,8 @@ import UserService from '../services/user'
 import { BadRequestError } from '../helpers/apiError'
 import logger from '../util/logger'
 import { myPassport } from '../config/passport'
+import jwt from 'jsonwebtoken'
+import { OAuth2Client } from 'google-auth-library'
 
 export const createUser = async (
   req: Request,
@@ -211,12 +213,7 @@ export const sucessLogin = async (
   next: NextFunction
 ) => {
   try {
-    console.log('COntroller sucess login')
-    console.log(req)
-    //const token=jwt.sign({foo:'bar'},'mysecretkey',{algorithm:'RS256'});
-    //console.log(req)
-    // return res.send(`login as ${req.body.username}`)
-    next()
+    return res.send(req.body.user.profile)
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

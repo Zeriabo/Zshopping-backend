@@ -58,7 +58,7 @@ app.use(
 app.use(express.static('public'))
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login sessions
-
+//passport.use(googleStrategy)
 // Express configuration
 app.set('port', port)
 // Global middleware
