@@ -11,7 +11,7 @@ export const verifyGoogleUser = async (
   let response: any = {}
   try {
     const ticket = await client.verifyIdToken({
-      idToken: req.body.user.token,
+      idToken: req.body.token,
       audience: process.env.CLIENT_ID,
     })
 
@@ -34,8 +34,7 @@ export const verifyGoogleUser = async (
     firstName: response.given_name,
     lastName: response.family_name,
   }
-
-  if (response.email_verified) {
+  if (verified) {
     next()
   } else {
     return new Error('email not verified')

@@ -28,7 +28,6 @@ const initialState = {
     history: {},
 };
 exports.loginUser = toolkit_1.createAsyncThunk("users/login", (loggedUser) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(loggedUser);
     const response = yield axios_1.default.post("https://zshopping-backend.herokuapp.com/api/v1/users/login", {
         user: loggedUser,
     });
@@ -69,22 +68,17 @@ exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(
     return userObj;
 }));
 exports.getHistory = toolkit_1.createAsyncThunk("users/getHistory", (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("getting history");
     const response = yield fetch("https://zshopping-backend.herokuapp.com/api/v1/carts/paid/" + userId);
     const res = yield response.json();
     return res;
 }));
 //end of fetch User
 exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("checking cart");
-    console.log(user);
     var userId = null;
     var cart = null;
     const gettingUserID = axios_1.default
         .get("https://zshopping-backend.herokuapp.com/api/v1/users/get/" + user.email)
         .then((response) => {
-        console.log(response.data.body.result[0].email);
-        console.log(user.email);
         if (response.data.body.result[0].email == user.email) {
             var userId = response.data.body.result[0].id;
             return userId;
@@ -161,7 +155,6 @@ exports.userSlice = toolkit_1.createSlice({
                 state.user = action.payload;
             }),
             builder.addCase(exports.loginUser.fulfilled, (state, action) => {
-                console.log("hashiduashduhasjdkhakshdkasjhdkjashjkashdkjashdkjahjkh");
                 state.loading = "succeeded";
                 state.user.email = action.payload.email;
                 state.user.id = action.payload.googleId;

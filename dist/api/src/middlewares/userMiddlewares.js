@@ -17,7 +17,7 @@ exports.verifyGoogleUser = (req, res, next) => __awaiter(void 0, void 0, void 0,
     let response = {};
     try {
         const ticket = yield client.verifyIdToken({
-            idToken: req.body.user.token,
+            idToken: req.body.token,
             audience: process.env.CLIENT_ID,
         });
         response = ticket.getPayload();
@@ -37,7 +37,7 @@ exports.verifyGoogleUser = (req, res, next) => __awaiter(void 0, void 0, void 0,
         firstName: response.given_name,
         lastName: response.family_name,
     };
-    if (response.email_verified) {
+    if (verified) {
         next();
     }
     else {
