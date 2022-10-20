@@ -178,7 +178,7 @@ const updateProduct = async (id: number, update: any) => {
     }
 
     response = await client.query(
-      'UPDATE  public."product" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5',
+      'UPDATE  public."products" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5',
       [title, price, discount, quantity, id]
     )
 

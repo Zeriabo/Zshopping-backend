@@ -107,7 +107,7 @@ const removeProductFromCart = (productId: number, cartId: number) => {
       if (results.rowCount == 1) {
         if (Number(results.rows[0].quantity) > 1) {
           client.query(
-            'Update public."cartDetails" SET "quantity"="quantity"-1, "price"="price"-(Select "price"*"discount"/100 from product where "id"=$1) WHERE  "productId"=$1 ',
+            'Update public."cartDetails" SET "quantity"="quantity"-1, "price"="price"-(Select "price"*"discount"/100 from products where "id"=$1) WHERE  "productId"=$1 ',
             [productId],
             (error: any, results: any) => {
               if (error) {
@@ -150,7 +150,7 @@ const getCartDetailsID = async (cartId: number) => {
 
 const getCartDetails = async (cartId: number) => {
   const response = await client.query(
-    'SELECT  cartdetails.quantity::int, product.id, product.category,product.description,product.image,product.price, product.title, cartdetails.price as total FROM public."cartDetails" cartdetails, public."product" product  WHERE "cartId"=$1 And cartdetails."productId"=product."id"',
+    'SELECT  cartdetails.quantity::int, product.id, product.category,product.description,product.image,product.price, product.title, cartdetails.price as total FROM public."cartDetails" cartdetails, public."products" product  WHERE "cartId"=$1 And cartdetails."productId"=product."id"',
     [cartId]
   )
   console.log(response.rows)
@@ -210,7 +210,7 @@ const updateCartDetail = async (id: number, update: any) => {
     }
 
     response = await client.query(
-      'UPDATE  public."product" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5',
+      'UPDATE  public."products" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5',
       [title, price, discount, quantity, id]
     )
     if (response.rowCount > 0) {
