@@ -42,9 +42,9 @@ router.get(
 
 /**
  * @openapi
- * /auth/account:
+ * /login:
  *  get:
- *    summary: authenthicate a user with googe
+ *    summary: authenthicate a user with google
  *     tags:
  *     - User
  *     description: Responds if the app is up and running
