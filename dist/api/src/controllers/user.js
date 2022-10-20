@@ -123,7 +123,7 @@ exports.findByEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const email = req.params.email;
         user_1.default.getUserByEmail(email)
             .then((result) => {
-            res.status(201).send({
+            res.status(200).send({
                 message: 'User is retrieved successfully!',
                 body: {
                     result,
@@ -198,12 +198,7 @@ exports.checkLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 // GET /users/auth/account
 exports.sucessLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log('COntroller sucess login');
-        console.log(req);
-        //const token=jwt.sign({foo:'bar'},'mysecretkey',{algorithm:'RS256'});
-        //console.log(req)
-        // return res.send(`login as ${req.body.username}`)
-        next();
+        return res.send(req.body.user.profile);
     }
     catch (error) {
         if (error instanceof Error && error.name == 'ValidationError') {

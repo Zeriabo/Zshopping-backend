@@ -153,7 +153,7 @@ const updateProduct = (id, update) => __awaiter(void 0, void 0, void 0, function
         if (quantity == null) {
             quantity = toUpdate.rows[0].quantity;
         }
-        response = yield server_1.client.query('UPDATE  public."product" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5', [title, price, discount, quantity, id]);
+        response = yield server_1.client.query('UPDATE  public."products" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5', [title, price, discount, quantity, id]);
         if (response.rowCount > 0) {
             updated = true;
         }

@@ -128,7 +128,7 @@ export const findByEmail = async (
     const email = req.params.email
     UserService.getUserByEmail(email)
       .then((result) => {
-        res.status(201).send({
+        res.status(200).send({
           message: 'User is retrieved successfully!',
           body: {
             result,

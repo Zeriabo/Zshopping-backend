@@ -1,15 +1,43 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.myPassport = void 0;
+exports.myPassport = exports.jwtStrategy = void 0;
 const passport_1 = __importDefault(require("passport"));
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const server_1 = require("../server");
+const passport_jwt_1 = __importStar(require("passport-jwt"));
 require('dotenv').config();
 const GOOGLE_CLIENT_ID = process.env.CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET;
+exports.jwtStrategy = new passport_jwt_1.default.Strategy({
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: `${process.env.JWT_SECRET}`,
+}, (jwtPayload, done) => {
+    const user = jwtPayload;
+    console.log('User from strategy', user);
+    done(null, user);
+});
 function getDate() {
     const dateTime = new Date();
     // get current date
@@ -43,9 +71,10 @@ function getDate() {
 exports.myPassport = passport_1.default.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://zshopping-backend.herokuapp.com/api/v1/users/auth/google-callback',
+    callbackURL: 'http://localhost:5001/api/v1/users/auth/google-callback',
     passReqToCallback: true,
 }, function (request, accessToken, refreshToken, profile, cb) {
+    console.log(profile);
     const user = {
         id: profile.id,
         name: profile.displayName,
@@ -83,9 +112,8 @@ exports.myPassport = passport_1.default.use(new GoogleStrategy({
                     console.log(null, err);
                 }
                 if (res) {
-                    //  console.log(res)
                     if (res.rowCount > 0) {
-                        //user existsgi
+                        return;
                     }
                     if (res.rowCount == 0) {
                         //user does not exists

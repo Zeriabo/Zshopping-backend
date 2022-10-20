@@ -44,10 +44,10 @@ router.get(
  * @openapi
  * /login:
  *  post:
- *    summary: authenthicate a user with google
+ *    summary: verify that the logged information is correct
  *     tags:
  *     - User
- *     description: Responds if the app is up and running
+ *     description: verify with google the account logged in and return sucess
  *     responses:
  *       200:
  *         description: App is up and running

@@ -80,7 +80,7 @@ const removeProductFromCart = (productId, cartId) => {
         console.log(results.rows[0]);
         if (results.rowCount == 1) {
             if (Number(results.rows[0].quantity) > 1) {
-                server_1.client.query('Update public."cartDetails" SET "quantity"="quantity"-1, "price"="price"-(Select "price"*"discount"/100 from product where "id"=$1) WHERE  "productId"=$1 ', [productId], (error, results) => {
+                server_1.client.query('Update public."cartDetails" SET "quantity"="quantity"-1, "price"="price"-(Select "price"*"discount"/100 from products where "id"=$1) WHERE  "productId"=$1 ', [productId], (error, results) => {
                     if (error) {
                         //record error in the error file
                         logger_1.default.error(error.detail);
@@ -112,7 +112,7 @@ const getCartDetailsID = (cartId) => __awaiter(void 0, void 0, void 0, function*
     return response.rows;
 });
 const getCartDetails = (cartId) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT  cartdetails.quantity::int, product.id, product.category,product.description,product.image,product.price, product.title, cartdetails.price as total FROM public."cartDetails" cartdetails, public."product" product  WHERE "cartId"=$1 And cartdetails."productId"=product."id"', [cartId]);
+    const response = yield server_1.client.query('SELECT  cartdetails.quantity::int, product.id, product.category,product.description,product.image,product.price, product.title, cartdetails.price as total FROM public."cartDetails" cartdetails, public."products" product  WHERE "cartId"=$1 And cartdetails."productId"=product."id"', [cartId]);
     console.log(response.rows);
     return response.rows;
 });
@@ -153,7 +153,7 @@ const updateCartDetail = (id, update) => __awaiter(void 0, void 0, void 0, funct
         if (quantity == null) {
             quantity = toUpdate.rows[0].quantity;
         }
-        response = yield server_1.client.query('UPDATE  public."product" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5', [title, price, discount, quantity, id]);
+        response = yield server_1.client.query('UPDATE  public."products" SET title=$1,price=$2,discount=$3,quantity=$4 where id= $5', [title, price, discount, quantity, id]);
         if (response.rowCount > 0) {
             updated = true;
         }

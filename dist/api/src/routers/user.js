@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_1 = require("../controllers/user");
+const userMiddlewares_1 = require("../middlewares/userMiddlewares");
 const passport_2 = require("../config/passport");
 const router = express_1.default.Router();
 // Every path we define here will get /api/v1/users prefix
@@ -23,11 +25,20 @@ const router = express_1.default.Router();
  */
 router.get('/auth/account', passport_2.myPassport.authenticate('google', {
     scope: ['email', 'profile'],
-}), (req, res) => {
-    const user = req.user.toJSON();
-    delete user.password;
-    res.status(200).json({ user });
-});
+}), user_1.sucessLogin);
+/**
+ * @openapi
+ * /login:
+ *  post:
+ *    summary: verify that the logged information is correct
+ *     tags:
+ *     - User
+ *     description: verify with google the account logged in and return sucess login
+ *     responses:
+ *       200:
+ *         description: App is up and running
+ */
+router.post('/login', userMiddlewares_1.verifyGoogleUser, user_1.sucessLogin);
 /**
  * @openapi
  * /login/failed:
@@ -60,7 +71,10 @@ router.get('/login/failed', (req, res) => {
  */
 router.get('/logout', (req, res) => {
     req.logOut();
-    res.redirect('https://zshopping.herokuapp.com/');
+    res.status(200).json({
+        success: true,
+        message: 'Successul logout',
+    });
 });
 /**
  * @openapi
@@ -76,12 +90,20 @@ router.get('/logout', (req, res) => {
  */
 router.get('/login/success', (req, res, next) => {
     res.cookie('user', req.user, {});
-    res.status(200).json({
-        success: true,
-        message: 'Successul login',
-        cookies: req.sessionStore.sessions,
-        user: req.user,
-    });
+    if (req.user) {
+        res.status(200).json({
+            success: true,
+            message: 'Successul login',
+            cookies: req.sessionStore.sessions,
+            user: req.user,
+        });
+    }
+    else {
+        res.status(500).json({
+            success: false,
+            message: 'failed login',
+        });
+    }
 });
 // Sign JSON Web Token, expires in 60 minutes
 const signToken = (res, user) => {
@@ -91,13 +113,12 @@ const signToken = (res, user) => {
         email: user.email,
         role: user.status.role,
     };
-    return payload;
-    // jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-    //   res.json({
-    //     success: true,
-    //     token: `Bearer ${token}`
-    //   });
-    // });
+    return jsonwebtoken_1.default.sign(payload, 'JWTTOCKENSECRET', { expiresIn: 3600 }, (err, token) => {
+        res.json({
+            success: true,
+            token: `Bearer ${token}`,
+        });
+    });
 };
 // Every path we define here will get /api/v1/users/ prefix
 /**
@@ -112,9 +133,10 @@ const signToken = (res, user) => {
  *         description: return the User
  */
 router.get('/auth/google-callback', passport_1.default.authenticate('google', {
-    successRedirect: 'https://zshopping.herokuapp.com/',
+    successRedirect: 'http://localhost:3000/',
     failureRedirect: '/login/failed',
 }), (req, res) => {
+    console.log(req.user);
     signToken(res, req.user);
 });
 /**

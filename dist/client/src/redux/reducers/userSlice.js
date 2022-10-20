@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.loadUser = exports.signin = exports.selectUser = exports.userSlice = exports.checkUserCart = exports.getHistory = exports.fetchUser = void 0;
+exports.logout = exports.loadUser = exports.signin = exports.selectUser = exports.userSlice = exports.checkUserCart = exports.getHistory = exports.fetchUser = exports.signOut = exports.loginUser = void 0;
 const toolkit_1 = require("@reduxjs/toolkit");
 const axios_1 = __importDefault(require("axios"));
 const initialState = {
@@ -27,6 +27,16 @@ const initialState = {
     cart: {},
     history: {},
 };
+exports.loginUser = toolkit_1.createAsyncThunk("users/login", (loggedUser) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield axios_1.default.post("https://zshopping-backend.herokuapp.com/api/v1/users/login", {
+        user: loggedUser,
+    });
+    return response.data;
+}));
+exports.signOut = toolkit_1.createAsyncThunk("users/logout", () => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield axios_1.default.get("https://zshopping-backend.herokuapp.com/api/v1/users/logout");
+    return response.data;
+}));
 exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(void 0, void 0, void 0, function* () {
     const userObj = {
         id: undefined,
@@ -58,18 +68,21 @@ exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(
     return userObj;
 }));
 exports.getHistory = toolkit_1.createAsyncThunk("users/getHistory", (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("getting history");
     const response = yield fetch("https://zshopping-backend.herokuapp.com/api/v1/carts/paid/" + userId);
     const res = yield response.json();
-    console.log(res);
     return res;
 }));
 //end of fetch User
 exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("checking cart");
+    console.log(user);
     var userId = null;
     var cart = null;
     const gettingUserID = axios_1.default
         .get("https://zshopping-backend.herokuapp.com/api/v1/users/get/" + user.email)
         .then((response) => {
+        console.log(response);
         if (response.data.body.result[0].email == user.email) {
             var userId = response.data.body.result[0].id;
             return userId;
@@ -145,7 +158,21 @@ exports.userSlice = toolkit_1.createSlice({
                 state.loading = "succeeded";
                 state.user = action.payload;
             }),
-            builder.addCase(exports.fetchUser.rejected, (state, action) => {
+            builder.addCase(exports.loginUser.fulfilled, (state, action) => {
+                console.log("hashiduashduhasjdkhakshdkasjhdkjashjkashdkjashdkjahjkh");
+                state.loading = "succeeded";
+                state.user.email = action.payload.email;
+                state.user.id = action.payload.googleId;
+                state.user.image = action.payload.imageUrl;
+                state.user.name = action.payload.name;
+            }),
+            builder.addCase(exports.signOut.fulfilled, (state, action) => {
+                state.loading = "idle";
+                state.cart = undefined;
+                state.history = initialState.history;
+                state.user = initialState.user;
+            }),
+            builder.addCase(exports.fetchUser.rejected, (state) => {
                 state.loading = "failed";
             });
         //cartChecked
