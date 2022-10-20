@@ -28,6 +28,7 @@ const initialState = {
     history: {},
 };
 exports.loginUser = toolkit_1.createAsyncThunk("users/login", (loggedUser) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(loggedUser);
     const response = yield axios_1.default.post("https://zshopping-backend.herokuapp.com/api/v1/users/login", {
         user: loggedUser,
     });
@@ -82,7 +83,8 @@ exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user)
     const gettingUserID = axios_1.default
         .get("https://zshopping-backend.herokuapp.com/api/v1/users/get/" + user.email)
         .then((response) => {
-        console.log(response);
+        console.log(response.data.body.result[0].email);
+        console.log(user.email);
         if (response.data.body.result[0].email == user.email) {
             var userId = response.data.body.result[0].id;
             return userId;

@@ -33,7 +33,7 @@ router.get('/auth/account', passport_2.myPassport.authenticate('google', {
  *    summary: verify that the logged information is correct
  *     tags:
  *     - User
- *     description: verify with google the account logged in and return sucess login
+ *     description: verify with google the account logged in and return sucess
  *     responses:
  *       200:
  *         description: App is up and running
