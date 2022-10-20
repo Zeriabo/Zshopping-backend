@@ -43,7 +43,7 @@ router.get(
 /**
  * @openapi
  * /login:
- *  get:
+ *  post:
  *    summary: authenthicate a user with google
  *     tags:
  *     - User
