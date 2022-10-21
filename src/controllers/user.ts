@@ -213,8 +213,7 @@ export const sucessLogin = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.body)
-    return res.send(req.body.profile)
+    return res.send(req.body.user.profile)
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

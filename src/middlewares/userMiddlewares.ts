@@ -10,7 +10,7 @@ export const verifyGoogleUser = async (
   const client = new OAuth2Client(process.env.CLIENT_ID)
   let response: any = {}
   console.log(req.body)
-  console.log(req.body.user.token)
+
   try {
     const ticket = await client.verifyIdToken({
       idToken: req.body.user.token,
@@ -36,9 +36,10 @@ export const verifyGoogleUser = async (
     firstName: response.given_name,
     lastName: response.family_name,
   }
+  console.log(verified)
   if (verified) {
     next()
   } else {
-    return new Error('email not verified')
+    next(Error('email not verified'))
   }
 }

@@ -28,13 +28,20 @@ const initialState = {
     history: {},
 };
 exports.loginUser = toolkit_1.createAsyncThunk("users/login", (loggedUser) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield axios_1.default.post("https://zshopping-backend.herokuapp.com/api/v1/users/login", {
+    console.log(loggedUser);
+    const response = yield axios_1.default.post("http://localhost:5001/api/v1/users/login", {
         user: loggedUser,
+    }, {
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
     });
+    console.log(response);
     return response.data;
 }));
 exports.signOut = toolkit_1.createAsyncThunk("users/logout", () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield axios_1.default.get("https://zshopping-backend.herokuapp.com/api/v1/users/logout");
+    const response = yield axios_1.default.get("http://localhost:5001api/v1/users/logout");
     return response.data;
 }));
 exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,7 +51,7 @@ exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(
         email: undefined,
         image: undefined,
     };
-    const response = yield fetch("https://zshopping-backend.herokuapp.com/api/v1/users/login/success", {
+    const response = yield fetch("http://localhost:5001/api/v1/users/login/success", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -68,7 +75,7 @@ exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(
     return userObj;
 }));
 exports.getHistory = toolkit_1.createAsyncThunk("users/getHistory", (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch("https://zshopping-backend.herokuapp.com/api/v1/carts/paid/" + userId);
+    const response = yield fetch("http://localhost:5001/api/v1/carts/paid/" + userId);
     const res = yield response.json();
     return res;
 }));
@@ -77,7 +84,7 @@ exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user)
     var userId = null;
     var cart = null;
     const gettingUserID = axios_1.default
-        .get("https://zshopping-backend.herokuapp.com/api/v1/users/get/" + user.email)
+        .get("http://localhost:5001/api/v1/users/get/" + user.email)
         .then((response) => {
         if (response.data.body.result[0].email == user.email) {
             var userId = response.data.body.result[0].id;
@@ -86,7 +93,7 @@ exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user)
         else {
             //user is not in user table and doesn't have a cart
             axios_1.default
-                .post("https://zshopping-backend.herokuapp.com/api/v1/users/", {
+                .post("http://localhost:5001/api/v1/users/", {
                 body: user,
             })
                 .then((res) => console.log(res));
@@ -95,24 +102,24 @@ exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user)
         .catch((err) => console.log(err));
     userId = yield gettingUserID;
     if (userId > 0) {
-        const cartApi = yield axios_1.default.get("https://zshopping-backend.herokuapp.com/api/v1/carts/user/" + userId);
+        const cartApi = yield axios_1.default.get("http://localhost:5001/api/v1/carts/user/" + userId);
         if (cartApi.data[0] != undefined) {
             return cartApi.data[0];
         }
         else {
             axios_1.default
-                .post("https://zshopping-backend.herokuapp.com/api/v1/users/", {
+                .post("http://localhost:5001/api/v1/users/", {
                 user,
             })
                 .then((res) => res)
                 .catch((err) => console.log(err));
             axios_1.default
-                .post("https://zshopping-backend.herokuapp.com/api/v1/carts/", {
+                .post("http://localhost:5001/api/v1/carts/", {
                 userId: user.id,
             })
                 .then((res) => res)
                 .catch((err) => console.log(err));
-            const cartApi = yield axios_1.default.get("https://zshopping-backend.herokuapp.com/api/v1/carts/user/", { params: { userId: userId } });
+            const cartApi = yield axios_1.default.get("http://localhost:5001/api/v1/carts/user/", { params: { userId: userId } });
             return cartApi.data[0];
         }
     }

@@ -15,9 +15,10 @@ exports.verifyGoogleUser = (req, res, next) => __awaiter(void 0, void 0, void 0,
     let verified = false;
     const client = new google_auth_library_1.OAuth2Client(process.env.CLIENT_ID);
     let response = {};
+    console.log(req.body);
     try {
         const ticket = yield client.verifyIdToken({
-            idToken: req.body.token,
+            idToken: req.body.user.token,
             audience: process.env.CLIENT_ID,
         });
         response = ticket.getPayload();
@@ -37,8 +38,9 @@ exports.verifyGoogleUser = (req, res, next) => __awaiter(void 0, void 0, void 0,
         firstName: response.given_name,
         lastName: response.family_name,
     };
+    console.log(verified);
     if (verified) {
-        next();
+        next(user);
     }
     else {
         return new Error('email not verified');

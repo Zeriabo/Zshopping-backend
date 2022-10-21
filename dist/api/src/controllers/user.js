@@ -197,8 +197,10 @@ exports.checkLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 });
 // GET /users/auth/account
 exports.sucessLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('next');
     try {
-        console.log(req.body);
+        console.log('sucessLogin');
+        console.log(req.user.profile);
         return res.send(req.body.profile);
     }
     catch (error) {
