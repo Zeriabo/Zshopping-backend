@@ -197,11 +197,8 @@ exports.checkLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 });
 // GET /users/auth/account
 exports.sucessLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('next');
     try {
-        console.log('sucessLogin');
-        console.log(req.user.profile);
-        return res.send(req.body.profile);
+        return res.send(req.body.user.profile);
     }
     catch (error) {
         if (error instanceof Error && error.name == 'ValidationError') {

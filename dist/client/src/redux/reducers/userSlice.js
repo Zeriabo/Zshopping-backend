@@ -28,7 +28,6 @@ const initialState = {
     history: {},
 };
 exports.loginUser = toolkit_1.createAsyncThunk("users/login", (loggedUser) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(loggedUser);
     const response = yield axios_1.default.post("http://localhost:5001/api/v1/users/login", {
         user: loggedUser,
     }, {
@@ -37,7 +36,6 @@ exports.loginUser = toolkit_1.createAsyncThunk("users/login", (loggedUser) => __
             "Access-Control-Allow-Origin": "*",
         },
     });
-    console.log(response);
     return response.data;
 }));
 exports.signOut = toolkit_1.createAsyncThunk("users/logout", () => __awaiter(void 0, void 0, void 0, function* () {
