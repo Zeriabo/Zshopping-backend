@@ -9,6 +9,7 @@ export const verifyGoogleUser = async (
   let verified = false
   const client = new OAuth2Client(process.env.CLIENT_ID)
   let response: any = {}
+  console.log(req.body)
   console.log(req.body.user.token)
   try {
     const ticket = await client.verifyIdToken({

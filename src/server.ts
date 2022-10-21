@@ -21,7 +21,6 @@ client.connect(function (err: any) {
     console.log(' Database Connected!')
   }
 })
-console.log('app is running on PORT :' + process.env.PORT)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(errorHandler())
